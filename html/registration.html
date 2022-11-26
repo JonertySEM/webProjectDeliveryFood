@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="registration.css">
+    <link href="../css/model.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Title</title>
+</head>
+
+
+<nav class="navbar">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/index.html">Delivery.Кушац</a>
+        <ul class="nav me-auto" id="navbar-left">
+            <li class="nav-item">
+                <a class="nav-link active" href="" style="color:black">Меню</a>
+            </li>
+        </ul>
+        <ul class="nav btn-wrapper-end" id="navbar-right">
+            <li class="nav-item">
+                <a class="nav-link active" href="../html/autherisation.html" style="color:black">Вход</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="registration.html" style="color:black">Регистрация</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<form class="spacer">
+    <div class="container">
+        <div class="shadow">
+            <div>
+                <h1>Регистрация нового пользователя</h1>
+            </div>
+            <div class ="mb-3">
+                <label for="exampleInputEmail1" class="text">ФИО</label>
+                <p>
+                <p>
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <p>
+            <div class="col">
+                <label class="text">Пол</label>
+                <p>
+                <p>
+                    <select class="form-select fw">
+                        <option>мужчина</option>
+                        <option>женщина</option>
+                    </select>
+            </div>
+            </p>
+            <p>
+            <div class="mb-3">
+                <label for="phone" class="text">Телефон</label>
+                <p>
+                <p>
+                    <input type="text" class="form-control" id="phone" name="user_phone" placeholder="+7 (xxx) xx xx xxx">
+            </div>
+            </p>
+            <p>
+                <div class="mb-3">
+                    <label class="form-label">Дата рождения</label>
+                    <input required="" type="date" class="form-control" id="birthDate">
+                </div>
+            </p>
+            <p>
+            <div class="mb-3">
+                <label for="inputAdress" class="text">Адрес</label>
+                <p>
+                <p>
+                    <input type="text" class="form-control" id="inputAdress">
+            </div>
+            </p>
+            <p>
+            <div class="mb-3">
+                <label for="inputEmail" class="text">Email</label>
+                <p>
+                <p>
+                    <input type="text" class="form-control" id="inputEmail">
+                <div id="emailHelp" class="form-text">Email будет использоваться для входа в систему</div>
+            </div>
+            </p>
+            <p>
+            <div class="mb-3">
+                <label for="inputPassword" class="text">Пароль</label>
+                <p>
+                <p>
+                    <input type="password" class="form-control" id="inputPassword">
+            </div>
+            </p>
+            <p>
+            <div class="">
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </div>
+            </p>
+        </div>
+    </div>
+
+
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!— IE10 viewport hack for Surface/desktop Windows 8 bug —>
+<script src="../js/jquery.maskedinput.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#phone").mask("+7 (999) 99-99-999");
+    });
+</script>
+</html>
