@@ -1,7 +1,12 @@
 const emailRegex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/
+const passwordRegex= /(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{9,}/
 const emailInput = $("#email");
 const inputPassword = $("#inputPassword");
-const adressInput=$("#adress")
+const adressInput=$("#adress");
+const birtDate=$("#birthDate")
+const numberPhone=$("#phone");
+const userName=$("#inputLogin");
+const gender=$("#sex");
 const registerButton = $("#registerButton");
 
 $(document).ready(function (){
@@ -12,7 +17,6 @@ $(document).ready(function (){
 
 function emailValidation()
 {
-    console.log(emailInput.val());
     if (emailRegex.test(emailInput.val()))
     {
         $("#wrongEmailAlert").addClass("d-none");
@@ -29,16 +33,15 @@ function emailValidation()
 
 function validatePasswords()
 {
-    if (inputPassword.val().length < 8)
+    if (passwordRegex.test(inputPassword.val()))
     {
-        $("#shortPasswordAlert").removeClass("d-none");
-        registerButton.attr("disabled",'true');
+        $("#shortPasswordAlert").addClass("d-none");
+        registerButton.removeAttr('disabled');
     }
     else
     {
-        $("#shortPasswordAlert").addClass("d-none");
-        registerButton.removeAttr("disabled");
-
+        $("#shortPasswordAlert").removeClass("d-none");
+        registerButton.attr("disabled",'true');
     }
 }
 
@@ -46,7 +49,7 @@ function Register()
 {
     if ($("#birthDate").val() == "")
     {
-        $("#CommonAlert").text("Все поля обязательны к заполнению");
+        $("#CommonAlert").text("Необходимо заполнить все поля");
         $("#CommonAlert").removeClass("d-none");
         return;
     }
@@ -54,10 +57,10 @@ function Register()
         fullName: $("#inputLogin").val(),
         password: inputPassword.val(),
         email: emailInput.val(),
-        adress: $("#adress").val(),
+        address: $("#adress").val(),
         birthDate: new Date($("#birthDate").val()).toISOString(),
         gender: $("#sex").val(),
-        phoneNumber: $("#phoneNumber").val()
+        phoneNumber: $("#phone").val()
     }
     for(title in userRegister)
     {
@@ -78,7 +81,7 @@ function Register()
                 let json = await response.json();
                 console.log(json);
                 localStorage.setItem('token',json.token);
-                window.location.href = '/index.html';
+                window.location.href = '../index.html';
             }
             else
             {
@@ -96,6 +99,7 @@ function Register()
                             $("#CommonAlert").text("Логин уже занят");
                             $("#CommonAlert").removeClass("d-none");
                     }
+                    console.log(json.errors);
                 }
             }
         })
