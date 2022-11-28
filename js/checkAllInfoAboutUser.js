@@ -38,13 +38,17 @@ function checkAuth(){
                 rightBlockOne.find(".nav-link").attr("id", 'add-nickname');
                 rightBlockOne.removeClass("d-none");
                 navbarRight.append(rightBlockOne);
+                document.getElementById("add-nickname").style.color= "black";
 
                 let rightBlockTwo = template.clone();
                 rightBlockTwo.find(".nav-link").text("Выйти");
+                rightBlockTwo.find(".nav-link").attr("id", 'add-button');
 
                 rightBlockTwo.removeClass("d-none");
                 rightBlockTwo.attr('onclick', 'logout()');
                 navbarRight.append(rightBlockTwo);
+                document.getElementById("add-button").style.color="black";
+                document.getElementById("add-button").style.background="#efefef";
 
                 let json = await response.json();
                 $("#add-nickname").text(json.email);

@@ -21,7 +21,6 @@ function login()
             return;
         }
     }
-    console.log("test");
     fetch("https://food-delivery.kreosoft.ru/api/account/login", {method: 'POST',
         body:JSON.stringify(user),
         headers: new Headers({"Content-Type": "application/json"})
