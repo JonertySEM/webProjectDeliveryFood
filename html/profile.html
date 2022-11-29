@@ -16,7 +16,7 @@
         <a class="navbar-brand">Delivery.Кушац</a>
         <ul class="nav me-auto" id="navbar-left">
             <li class="nav-item">
-                <a class="nav-link active" href="/index.html" style="color:black">Меню</a>
+                <a class="nav-link active" href="../index.html" style="color:black">Меню</a>
             </li>
         </ul>
         <ul class="nav btn-wrapper-end" id="navbar-right">
@@ -30,114 +30,72 @@
     </div>
 </nav>
 
-
 <form class="spacer">
+
     <div class="container">
         <div class="shadow">
-            <!--<div>
+            <div>
                 <h1>Профиль</h1>
             </div>
-            <p>
-            </p>
-            <div class ="row">
-                <div class="col-md-3">
-                    <label class="text" for="inputLogin">ФИО</label>
-                </div>
-                    <div class="col-md-8">
-                        <input class="form-control" aria-describedby="emailHelp" id="inputLogin">
-                    </div>
-            </div>
-            <p>
-            <div class="row">
-                <div class="col-md-3">
-                    <label class="text" for="sex">Пол</label>
-                </div>
-
-                <div class="col-md-8">
-                    <select class="form-select fw" id="sex">
-                        <option value="Male">мужчина</option>
-                        <option value="Female">женщина</option>
-                    </select>
-                </div>
-
-            </div>
-            </p>
-            <p>
-            <div class="row">
-                <div class="col-md-3">
-                    <label for="phone" class="text">Телефон</label>
-                </div>
-                <div class="col-md-8">
-                    <input type="text" class="form-control" id="phone" name="user_phone" placeholder="+7 (xxx) xxx xx xx">
+            <div class="row mb-3">
+                <label for="FIO"  class="col-sm-2 col-form-label">ФИО</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="FIO">
                 </div>
             </div>
-
-            </p>
             <p>
-            <div class="row">
-                <div class="col-md-3">
-                    <label class="form-label" for="birthDate">Дата рождения</label>
+            <div class="row mb-3">
+                <label for="email" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <a class="nav-link active" href="" style="color:black" id="email"></a>
                 </div>
-                <div class="col-md-8">
+            </div>
+            <p>
+            <div class="row mb-3">
+                <label for="birthDate"  class="col-sm-2 col-form-label">День рождения</label>
+                <div class="col-sm-10">
                     <input required="" type="date" class="form-control" id="birthDate">
                 </div>
-
-
             </div>
+            <p>
+            <div class="row mb-3">
+                <label  class="col-sm-2 col-form-label" for="sex">Пол</label>
+                <div class="col-sm-10">
+                    <a class="nav-link active" href="" style="color:black" id="sex"></a>
+                </div>
+            </div>
+            <p>
+            <div class="row mb-3">
+                <label for="adress" class="col-sm-2 col-form-label">Адрес</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="adress">
+                </div>
+            </div>
+            <p>
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="phone">Телефон</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="phone">
+                </div>
+            </div>
+            <p>
+
             </p>
             <p>
-            <div class="row">
-                <div class="col-md-3">
-                    <label for="adress" class="text">Адрес</label>
-                </div>
-                <div class="col-md-8">
-                    <input type="text" class="form-control" id="adress">
-                </div>
-
-
+            <div class="col d-flex justify-content-end align-items-end">
+                <button type="button" class="btn btn-primary" id="loginButton" >Изменить</button>
             </div>
+
             </p>
-            <p>
-            <div class="row">
-                <div class="col-md-3">
-                    <label class="text" for="email">Email</label>
-                </div>
-
-                <div class="col-md-8">
-                    <input type="text" class="form-control" id="email">
-                </div>
-
-            </div>
-            </p>
-            <p>
-            <div class="row">
-                <div class="col-md-3">
-                    <label for="inputPassword" class="text">Пароль</label>
-                </div>
-
-                <div class="col-md-8">
-                    <input type="password" class="form-control" id="inputPassword">
-                </div>
-
-            </div>-->
-            <div style="display:flex; flex-direction: row; justify-content: flex-start;">
-                <label>Name:</label>
-            </div>
-
-            <div style="display:flex; flex-direction: row; justify-content: flex-end;">
-                <input name="Student" />
-            </div>
-            </p>
-            <!--<p>
-                <label for="registerButton"></label>
-                <button type="button" class="btn btn-primary" id="registerButton">Зарегистрироваться</button>
-            </p>-->
         </div>
     </div>
+
 </form>
+
 
 </body>
 <script src="/js/checkAllInfoAboutUser.js"></script>
+<script src="/js/setProfile.js"></script>
 
 
 </html>

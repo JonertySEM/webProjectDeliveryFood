@@ -1,107 +1,51 @@
-const emailRegex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/
-
-$(document).ready(function (){
-    CheckforAuth();
-    $("#changeButton").click(UpdateData);
+$(document).ready(function () {
+    getUserInfo();
 });
 
-function CheckforAuth(){
-    fetch("https://food-delivery.kreosoft.ru/api/account/profile", {headers: new Headers({
-            "Authorization" : "Bearer " + localStorage.getItem("token")
+function getUserInfo() {
+    fetch("https://food-delivery.kreosoft.ru/api/account/profile", {
+        method: 'GET',
+        headers: new Headers({
+            "Authorization": "Bearer " + localStorage.getItem("token")
         })
     })
         .then(async (response) => {
-            if (response.ok){
+            if (response.ok) {
                 let json = await response.json();
-                console.log(json);
-                $("#add-nickname").text("Авторизован как - " + json.nickName);
-                FillCurrentData(json);
+                showUserInfo(json)
+            } else {
+                //Оформить ошибку при неудачном распозновании данных
             }
-            else
-            {
-                window.location.href = "/html/login.html";
-            }
+
         })
 }
 
-function FillCurrentData(json)
-{
-    $("#nickname").text(json.nickName);
-    $("#email").attr("value", json.email);
-    if (json.gender == "Male")
-    {
-        $("#male").attr("selected", "true");
-    }
-    else
-    {
-        $("#female").attr("selected","true");
-    }
-    $("#nameSurname").attr('value', json.name);
+function showUserInfo(json) {
+
+    document.getElementById("FIO").value = json.fullName
+    document.getElementById("email").text = json.email
+
     let dateandTime = json.birthDate.split('T');
-    $("#birthDate").val(dateandTime[0]);
-    localStorage.setItem("id", json.id);
+    let onlDate = dateandTime[0].split('-');
+
+
+    var day = ("0" + onlDate[2]).slice(-2);
+    var month = ("0" + (onlDate[1] + 1)).slice(-2);
+    var today = onlDate[0]+"-"+(month)+"-"+(day) ;
+    $('#birthDate').val(today);
+
+    convertGender(json.gender);
+
+    document.getElementById("adress").value = json.address
+    document.getElementById("phone").value = json.phoneNumber
+
 }
 
-function UpdateData()
-{
-    $("#wrongEmailAlert").addClass("d-none");
-    $("#wrongLinkAlert").addClass("d-none");
-    $("#wrongBirthDateAlert").addClass("d-none");
-    $("#wrongNameAlert").addClass("d-none");
-    let emailInput = $("#email").val();
-    if (!emailRegex.test(emailInput))
-    {
-        $("#wrongEmailAlert").removeClass("d-none");
-        return;
+function convertGender(gender) {
+    if (gender === "Male") {
+        document.getElementById("sex").text = "мужчина"
+    } else {
+        document.getElementById("sex").text = "женщина"
     }
-    let avatarLinkInput = $("#avatarLink").val();
-    if ((!(linkRegex.test(avatarLinkInput))) && (avatarLinkInput != ""))
-    {
-        $("#wrongLinkAlert").removeClass("d-none");
-        return;
-    }
-    if (avatarLinkInput == "")
-    {
-        avatarLinkInput = null;
-    }
-    if (!($("#nameSurname").val()))
-    {
-        console.log("зашли");
-        $("#wrongNameAlert").removeClass("d-none");
-        return;
-    }
-    let changeData = {
-        id:localStorage.getItem('id'),
-        nickName:$("#nickname").text(),
-        email:emailInput,
-        avatarLink: avatarLinkInput,
-        name:$("#nameSurname").val(),
-        birthDate:new Date($("#birthDate").val()).toISOString(),
-        gender: parseInt($("#sex").val())
-    }
-    fetch("https://react-midterm.kreosoft.space/api/account/profile", {method: "PUT",
-        headers: new Headers({"Content-Type": "application/json", "accept": "*/*", "Authorization" : "Bearer " + localStorage.getItem("token")}),
-        body:JSON.stringify(changeData)
-    })
-        .then(async (response) => {
-            if (!response.ok)
-            {
-                let json = await response.json();
-                console.log(json);
-                if (json.message == "Invalid birth date")
-                {
-                    $("#wrongBirthDateAlert").removeClass("d-none");
-                }
-            }
-            else
-            {
-                window.location.href = "/html/profile.html";
-            }
-        })
-}
 
-function Logout()
-{
-    localStorage.removeItem("token");
-    window.location.href = "/index.html";
 }

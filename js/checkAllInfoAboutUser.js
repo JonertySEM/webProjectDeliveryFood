@@ -6,13 +6,15 @@ $(document).ready(function (){
 
 
 function checkAuth(){
+    localStorage.getItem("token");
     fetch("https://food-delivery.kreosoft.ru/api/account/profile", {headers: new Headers({
             "Authorization" : "Bearer " + localStorage.getItem("token")
         })
     })
+
         .then(async (response) => {
             if (response.ok){
-                console.log("text");
+                console.log(localStorage.getItem("token"));
                 let navbarLeft = $("#navbar-left");
                 let navbarRight = $("#navbar-right");
                 let template = $("#auth-user-navbar-template");
@@ -52,13 +54,31 @@ function checkAuth(){
 
                 let json = await response.json();
                 $("#add-nickname").text(json.email);
-                $("#add-nickname").attr('href', '');
+                $("#add-nickname").attr('href', 'html/profile.html');
             }
         })
 }
 
 function logout()
 {
+    console.log("neeee teest");
+
+    /*fetch("https://food-delivery.kreosoft.ru/api/account/logout"), {method: 'POST',
+        headers: new Headers({
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        })
+            .then(async (response) => {
+                if (response.ok) {
+                    console.log("teeeest");
+                    localStorage.removeItem("token");
+                    window.location.href = "../index.html";
+                }
+                else{
+                    console.log("text");
+                }
+
+            })
+    }*/
     localStorage.removeItem("token");
     window.location.href = "../index.html";
 }
