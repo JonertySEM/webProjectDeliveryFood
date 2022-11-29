@@ -48,6 +48,7 @@ function checkAuth(){
 
                 rightBlockTwo.removeClass("d-none");
                 rightBlockTwo.attr('onclick', 'logout()');
+
                 navbarRight.append(rightBlockTwo);
                 document.getElementById("add-button").style.color="black";
                 document.getElementById("add-button").style.background="#efefef";
@@ -55,6 +56,7 @@ function checkAuth(){
                 let json = await response.json();
                 $("#add-nickname").text(json.email);
                 $("#add-nickname").attr('href', 'html/profile.html');
+                $("#add-button").attr('href','../index.html');
             }
         })
 }
@@ -80,5 +82,5 @@ function logout()
             })
     }*/
     localStorage.removeItem("token");
-    window.location.href = "../index.html";
+    /*window.location.href = "../index.html";*/
 }
