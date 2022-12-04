@@ -56,7 +56,15 @@ function checkAuth(){
                 let json = await response.json();
                 $("#add-nickname").text(json.email);
                 $("#add-nickname").attr('href', 'html/profile.html');
-                $("#add-button").attr('href','../index.html');
+
+                if(window.location.href.split("http://localhost:63342/webProject/html/")[1] == "profile.html"){
+                    $("#add-button").attr('href','../index.html');
+                }
+                else{
+                    $("#add-button").attr('href','index.html');
+                }
+
+
             }
         })
 }
@@ -82,5 +90,4 @@ function logout()
             })
     }*/
     localStorage.removeItem("token");
-    /*window.location.href = "../index.html";*/
 }

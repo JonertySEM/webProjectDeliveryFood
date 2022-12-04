@@ -1,0 +1,79 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="../css/model.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Title</title>
+</head>
+
+<body>
+<li class="nav-item d-none" id="auth-user-navbar-template">
+    <a class="nav-link active"href=""></a>
+</li>
+<nav class="navbar">
+    <div class="container-fluid">
+        <a class="navbar-brand">Delivery.Кушац</a>
+        <ul class="nav me-auto" id="navbar-left">
+            <li class="nav-item">
+                <a class="nav-link active" href="../index.html" style="color:black">Меню</a>
+            </li>
+        </ul>
+        <ul class="nav btn-wrapper-end" id="navbar-right">
+            <li class="nav-item">
+                <a class="nav-link active" href="autherisation.html" style="color:black">Вход</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="registration.html" style="color:black">Регистрация</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<form class="spacer">
+
+    <div class="container">
+        <div class="shadow">
+            <h5 class="card-title" id="dishes-name"></h5>
+            <div class="linee">
+                <div class="dishes-template" id="dishes-card">
+
+                    <div class="card-flex justify-content-center cardposit">
+                        <img id="dishes-image" class="test" src="" alt="">
+                        <div class="card-body row digit">
+
+                            <div class="card-text" id="dishes-type"></div>
+                            <div class="card-text" id="dishes-vegetarian"></div>
+                            <p>
+
+                            </p>
+                            <div class="card-text" id="dishes-description"></div>
+                            <div class="linee">
+                                <div class="stars-outer">
+                                    <div class="stars-inner" id="dishes-rating"></div>
+                                </div>
+                            </div>
+                            <div class="card-text" id="dishes-price"></div>
+
+                        </div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+    </div>
+</form>
+
+
+</body>
+<script src="/js/dishesCard.js"></script>
+<script src="/js/checkAllInfoAboutUser.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="../js/jquery.maskedinput.min.js"></script>
+
+</html>

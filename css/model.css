@@ -6,6 +6,10 @@
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
+.test{
+    max-width: 25%;
+    height: auto;
+}
 
 
 
@@ -22,6 +26,13 @@
 .text{
     font-weight: normal;
 
+}
+.digit
+{
+    text-align: center;
+    float: none;
+    margin-left: 50%;
+    margin-right: 50%;
 }
 
 .space{

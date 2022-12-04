@@ -1,18 +1,14 @@
 const stableUrl = "https://food-delivery.kreosoft.ru/api/dish?categories=Wok&categories=Pizza&categories=Soup&categories=Dessert&categories=Drink&page=1"
 $(document).ready(function (){
     $("#sendButton").on('click', LoadMainDishes);
-
-
     if (localStorage.getItem('current'))
     {
         LoadMainDishes(takeDishes(), swCheckVeg, takeSort(),localStorage.getItem('current'));
-
     }
     else
     {
         LoadMainDishes();
     }
-
    /*CreatePagination(localStorage.getItem("count"), localStorage.getItem('current'));*/
 
 });
@@ -40,7 +36,7 @@ function checkStars(ratings){
     const starTotal = 5;
 
     const starPercentage = (ratings/ starTotal) * 100;
-    const starPercentageRounded = `${(Math.round(starPercentage / 10) * 10)/2}%`;
+    const starPercentageRounded = `${(Math.round(starPercentage / 10) * 10)}%`;
     document.querySelector(`.stars-inner`).style.width = starPercentageRounded;
 }
 
@@ -96,6 +92,7 @@ function LoadMainDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDi
             localStorage.setItem("count", json.pagination.count);
 
             CreatePagination(localStorage.getItem("count"), localStorage.getItem('current'));
+            DishesClick();
         });
 
 
@@ -149,6 +146,7 @@ function LoadDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDish=t
             ammountPage = json.pagination.count;*/
             localStorage.setItem("current", json.pagination.current);
             localStorage.setItem("count", json.pagination.count);
+            DishesClick();
         });
 
 
@@ -218,6 +216,14 @@ function PageChangeEvent()
             $(`[page=${previousPage}]`).addClass("active");
             LoadDishes(takeDishes(), swCheckVeg, takeSort(),previousPage);
         }
+    })
+}
+
+function DishesClick()
+{
+    $(".dishes-template").click(function(){
+        localStorage.setItem('curDishes', $(this).attr('id'));
+        window.location.href = ("html/dishesCard.html");
     })
 }
 
