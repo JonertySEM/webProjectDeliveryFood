@@ -1,23 +1,21 @@
 const stableUrl = "https://food-delivery.kreosoft.ru/api/dish?categories=Wok&categories=Pizza&categories=Soup&categories=Dessert&categories=Drink&page=1"
+
 $(document).ready(function (){
     $("#sendButton").on('click', LoadMainDishes);
-
 
     if (localStorage.getItem('current'))
     {
         LoadMainDishes(takeDishes(), swCheckVeg, takeSort(),localStorage.getItem('current'));
-
     }
     else
     {
         LoadMainDishes();
-    }
 
+    }
    /*CreatePagination(localStorage.getItem("count"), localStorage.getItem('current'));*/
 
 });
 let swCheckVeg = "";
-
 
 function takeDishes(){
     /*console.log($("#selectFoodValue").val());*/
@@ -35,15 +33,42 @@ function takeSort(){
     sortPosition += "sorting=" + $("#selectSorting").val() + "&";
     return sortPosition;
 }
-
-function checkStars(ratings){
-    const starTotal = 5;
-
-    const starPercentage = (ratings/ starTotal) * 100;
-    const starPercentageRounded = `${(Math.round(starPercentage / 10) * 10)/2}%`;
-    document.querySelector(`.stars-inner`).style.width = starPercentageRounded;
+function include(url) {
+    var script = document.createElement('script');
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
 }
+include("/lib/star-rating.js")
 
+function takeRating(page){
+    let actualUrl;
+    if(takeDishes().toString() == "" && takeSort().toString() ==""){
+        actualUrl = stableUrl;
+    }
+    else{
+        actualUrl = "https://food-delivery.kreosoft.ru/api/dish?" + takeDishes() + swCheckVeg.toString() + takeSort() + 'page=' + page.toString();
+        console.log(takeDishes());
+    }
+
+    fetch(actualUrl)
+        .then((response) => {
+            console.log(response);
+            return response.json();
+        })
+        .then((json) => {
+            for (let dish of json.dishes)
+            {
+                console.log(dish.rating);
+                document.getElementById("stars").id = dish.id.toString();
+
+                    createRating(dish.rating);
+
+
+            }
+
+        });
+
+}
 
 
 function LoadMainDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDish=takeSort(), page = 1){
@@ -74,20 +99,23 @@ function LoadMainDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDi
             $("#dishes-container").empty();
 
             let template = $('#dishes-card');
-
+            let count = 0;
             for (let dish of json.dishes)
             {
+
                 let block = template.clone();
                 block.attr("id", dish.id);
                 block.find("#dishes-name").text(dish.name);
                 block.find("#dishes-image").attr("src", dish.image);
                 block.find("#dishes-dicription").text(dish.description);
+                block.find("#line").addClass(dish.id.toString());
+                block.find(".my-rating").attr("id", count);
                 block.find("#dishes-type").text("Категория блюда - " + takeTypeDishes(dish.category));
                 block.find("#footer-text").text("Цена - " + dish.price + "р");
-                checkStars(dish.rating);
                 console.log(dish);
                 block.removeClass("d-none");
                 $("#dishes-container").append(block);
+                count+=1;
 
             }
             curPage = json.pagination.current;
@@ -96,10 +124,46 @@ function LoadMainDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDi
             localStorage.setItem("count", json.pagination.count);
 
             CreatePagination(localStorage.getItem("count"), localStorage.getItem('current'));
+            DishesClick();
+
+            fetch(actualUrl)
+                .then((response) => {
+                    console.log(response);
+                    return response.json();
+                })
+                .then((json) => {
+                    for (let dish of json.dishes)
+                    {
+                        console.log(dish.rating);
+                       createRating(dish.rating, dish.id);
+                    }
+
+                });
+
         });
 
 
 }
+
+function createRating(rating, id){
+
+    let nm = ((("newLinee "+ id.toString()).split("newLinee ")[1])).toString();
+    console.log(nm);
+    $("."+nm).starRating({
+            starSize: 20,
+            totalStars: 10,
+            readOnly: true,
+            initialRating: rating,
+            activeColor: "gold",
+            ratedColor: "black",
+            useGradient: false,
+            emptyColor: "black",
+            callback: function (currentRating, $el) {
+            }
+        });
+}
+
+
 
 function LoadDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDish=takeSort(), page = 1){
 
@@ -129,7 +193,7 @@ function LoadDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDish=t
             $("#dishes-container").empty();
 
             let template = $('#dishes-card');
-
+            let count = 0;
             for (let dish of json.dishes)
             {
                 let block = template.clone();
@@ -137,18 +201,37 @@ function LoadDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDish=t
                 block.find("#dishes-name").text(dish.name);
                 block.find("#dishes-image").attr("src", dish.image);
                 block.find("#dishes-dicription").text(dish.description);
+                block.find(".my-rating").attr("id", count);
+                block.find("#line").addClass(dish.id.toString());
                 block.find("#dishes-type").text("Категория блюда - " + takeTypeDishes(dish.category));
                 block.find("#footer-text").text("Цена - " + dish.price + "р");
-                checkStars(dish.rating);
                 console.log(dish);
                 block.removeClass("d-none");
                 $("#dishes-container").append(block);
+                count+=1;
 
             }/*
             curPage = json.pagination.current;
             ammountPage = json.pagination.count;*/
             localStorage.setItem("current", json.pagination.current);
             localStorage.setItem("count", json.pagination.count);
+            DishesClick();
+
+            fetch(actualUrl)
+                .then((response) => {
+                    console.log(response);
+                    return response.json();
+                })
+                .then((json) => {
+                    for (let dish of json.dishes)
+                    {
+                        console.log(dish.rating);
+                        createRating(dish.rating, dish.id);
+
+
+                    }
+
+                });
         });
 
 
@@ -218,6 +301,14 @@ function PageChangeEvent()
             $(`[page=${previousPage}]`).addClass("active");
             LoadDishes(takeDishes(), swCheckVeg, takeSort(),previousPage);
         }
+    })
+}
+
+function DishesClick()
+{
+    $(".dishes-template").click(function(){
+        localStorage.setItem('curDishes', $(this).attr('id'));
+        window.location.href = ("html/dishesCard.html");
     })
 }
 
