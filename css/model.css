@@ -27,6 +27,19 @@
     font-weight: normal;
 
 }
+.newLinee{
+    padding:10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    box-shadow: 0 0 1px;
+}
+.noLine{
+    padding:10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
 .digit
 {
     text-align: center;

@@ -2,6 +2,31 @@ $(document).ready(function() {
     loadDishesDetail();
 })
 
+function include(url) {
+    var script = document.createElement('script');
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+}
+include("/lib/star-rating.js")
+
+
+function createRating(rating, id){
+
+    let nm = ((("noLine "+ id.toString()).split("noLine ")[1])).toString();
+    console.log(nm);
+    $("."+nm).starRating({
+        starSize: 20,
+        totalStars: 10,
+        readOnly: true,
+        initialRating: rating,
+        activeColor: "gold",
+        ratedColor: "black",
+        useGradient: false,
+        emptyColor: "black",
+        callback: function (currentRating, $el) {
+        }
+    });
+}
 
 function loadDishesDetail()
 {
@@ -12,9 +37,8 @@ function loadDishesDetail()
             $("#dishes-image").attr('src', json.image);
             $("#dishes-name").text(`${json.name}`);
             $("#dishes-description").text(json.description);
-            checkStars(json.rating);
             $("#dishes-price").text("Цена: " + json.price.toString() + " руб./шт");
-
+            $("#line").addClass(json.id.toString());
             $("#dishes-type").text("Категория блюда - " + json.category);
             if(json.vegetarian == false){
                 $('#dishes-vegetarian').text("Не вегетерианское");
@@ -55,12 +79,11 @@ function loadDishesDetail()
             }
             $("#age").text(`${json.ageLimit}+`);
         })
-}
+    fetch(`https://food-delivery.kreosoft.ru/api/dish/${localStorage.getItem("curDishes")}`)
+        .then(async (response) =>{
+            let json = await response.json();
+                createRating(json.rating, json.id);
 
-function checkStars(ratings){
-    const starTotal = 5;
+        })
 
-    const starPercentage = (ratings/ starTotal) * 100;
-    const starPercentageRounded = `${(Math.round(starPercentage / 10) * 10)}%`;
-    document.querySelector(`.stars-inner`).style.width = starPercentageRounded;
 }
