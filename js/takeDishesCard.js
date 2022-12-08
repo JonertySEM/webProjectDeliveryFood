@@ -1,5 +1,5 @@
 const stableUrl = "https://food-delivery.kreosoft.ru/api/dish?categories=Wok&categories=Pizza&categories=Soup&categories=Dessert&categories=Drink&page=1"
-
+include("/lib/star-rating.js");
 $(document).ready(function (){
     $("#sendButton").on('click', LoadMainDishes);
 
@@ -38,7 +38,8 @@ function include(url) {
     script.src = url;
     document.getElementsByTagName('head')[0].appendChild(script);
 }
-include("/lib/star-rating.js")
+
+
 
 function takeRating(page){
     let actualUrl;
@@ -106,12 +107,16 @@ function LoadMainDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDi
                 let block = template.clone();
                 block.attr("id", dish.id);
                 block.find("#dishes-name").text(dish.name);
-                block.find("#dishes-image").attr("src", dish.image);
+                block.find("#footer-text").text("Цена - " + dish.price + "р");
+                block.find(".dishes-image").attr("src", dish.image);
+                block.find(".dishes-image").attr("id", dish.id);
                 block.find("#dishes-dicription").text(dish.description);
+                block.find(".card-footer").attr("id", dish.id+"_footer");
                 block.find("#line").addClass(dish.id.toString());
                 block.find(".my-rating").attr("id", count);
                 block.find("#dishes-type").text("Категория блюда - " + takeTypeDishes(dish.category));
-                block.find("#footer-text").text("Цена - " + dish.price + "р");
+
+
                 console.log(dish);
                 block.removeClass("d-none");
                 $("#dishes-container").append(block);
@@ -139,11 +144,133 @@ function LoadMainDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDi
                     }
 
                 });
+            fetch("https://food-delivery.kreosoft.ru/api/account/profile", {headers: new Headers({
+                    "Authorization" : "Bearer " + localStorage.getItem("token")
+                })
+            })
+                .then(async (response) => {
+                    if (response.ok) {
+                        console.log(response);
+
+                        takeBasket(actualUrl);
+                        return response.json();
+
+                    }
+                });
+
+
+
 
         });
 
 
 }
+
+function giveInBasket(id, price){
+    fetch("https://food-delivery.kreosoft.ru/api/basket/dish/" + id.toString(), {method: 'POST',
+        headers: new Headers({
+            "Authorization" : "Bearer " + localStorage.getItem("token")
+        })
+    })
+        .then(async (response) =>{
+            if (response.ok){
+                let countDish = 1;
+                console.log("dish has been accept in your basket");
+                document.getElementById(id.toString()+"_footer").innerHTML = "Цена - " + price + "р" + changeValue(countDish, id);
+                document.getElementById('takePos'+id.toString()).addEventListener("click",function (){
+                    addNewDishes(id);
+                    countDish+=1;
+                    console.log("add this dish");
+                    document.getElementById(id.toString()+"_footer").innerHTML = "Цена - " + price + "р" + changeValue(countDish, id);
+                }, false);
+
+                document.getElementById('delPos'+id.toString()).addEventListener("click", function (){
+                    console.log("dish has been deleted");
+                    deleteNewDishes(id);
+                    countDish-=1;
+                    if(countDish == 0){
+                        let str = "<button type=\"button\" class=\"btn btn-primary float-end\" " + "id=" + id.toString() + "_button" + " "+ ">В корзину</button>";
+                        document.getElementById(id.toString()+"_footer").innerHTML = "";
+                        document.getElementById(id.toString()+"_footer").innerHTML = "Цена - " + price + "р" + str;
+                    }
+                    else{
+                        document.getElementById(id.toString()+"_footer").innerHTML = "Цена - " + price + "р" + changeValue(countDish, id);
+
+                    }
+
+                }, false);
+
+            }
+        });
+
+}
+
+function changeValue(countDish, id){
+    let strValue = "<input type=\"text\" value="+ countDish +">\n";
+    let buttonDegrees = " <div class=\"col float-end\">\n" +
+        "                        <div class=\"amount\">\n" +
+        "                            <span class=\"down\" id=" +"delPos"+ id.toString() + ">-</span>\n" +
+        strValue+
+        "                            <span class=\"up\" id=" +"takePos"+ id.toString() + ">+</span>\n" +
+        "                        </div>\n" +
+        "                    </div>";
+    return buttonDegrees;
+
+
+}
+
+function addNewDishes(id){
+    fetch("https://food-delivery.kreosoft.ru/api/basket/dish/" + id.toString(), {method: 'POST',
+        headers: new Headers({
+            "Authorization" : "Bearer " + localStorage.getItem("token")
+        })
+    })
+        .then(async (response) =>{
+            if (response.ok){
+
+            }
+        });
+}
+function deleteNewDishes(id){
+    fetch("https://food-delivery.kreosoft.ru/api/basket/dish/" + id.toString() + "?increase=true", {method: 'DELETE',
+        headers: new Headers({
+            "Authorization" : "Bearer " + localStorage.getItem("token")
+        })
+    })
+        .then(async (response) =>{
+            if (response.ok){
+                console.log("delete dish");
+            }
+        });
+}
+
+
+
+function takeBasket(url){
+    fetch(url)
+        .then((response) => {
+            console.log(response);
+            return response.json();
+        })
+        .then((json) => {
+            console.log(json);
+            for (let dish of json.dishes)
+            {
+                let ides = dish.id;
+                let str = "<button type=\"button\" class=\"btn btn-primary float-end\" " + "id=" + ides.toString() + "_button" + " "+ ">В корзину</button>";
+                document.getElementById(dish.id.toString()+"_footer").innerHTML += str;
+                document.getElementById(dish.id.toString()+"_button").addEventListener("click", function (){
+                    giveInBasket(dish.id, dish.price);
+                },false);
+
+
+            }
+            console.log("user is auth");
+        });
+}
+
+
+
 
 function createRating(rating, id){
 
@@ -199,9 +326,11 @@ function LoadDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDish=t
                 let block = template.clone();
                 block.attr("id", dish.id);
                 block.find("#dishes-name").text(dish.name);
-                block.find("#dishes-image").attr("src", dish.image);
+                block.find(".dishes-image").attr("src", dish.image);
+                block.find(".dishes-image").attr("id", dish.id);
                 block.find("#dishes-dicription").text(dish.description);
                 block.find(".my-rating").attr("id", count);
+                block.find(".card-footer").attr("id", dish.id+"_footer");
                 block.find("#line").addClass(dish.id.toString());
                 block.find("#dishes-type").text("Категория блюда - " + takeTypeDishes(dish.category));
                 block.find("#footer-text").text("Цена - " + dish.price + "р");
@@ -304,9 +433,9 @@ function PageChangeEvent()
     })
 }
 
-function DishesClick()
+function DishesClick(id)
 {
-    $(".dishes-template").click(function(){
+    $(".dishes-image").click(function(){
         localStorage.setItem('curDishes', $(this).attr('id'));
         window.location.href = ("html/dishesCard.html");
     })
