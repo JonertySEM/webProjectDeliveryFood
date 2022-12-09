@@ -2,7 +2,6 @@ const stableUrl = "https://food-delivery.kreosoft.ru/api/dish?categories=Wok&cat
 include("/lib/star-rating.js");
 $(document).ready(function () {
     $("#sendButton").on('click', LoadMainDishes);
-
     if (localStorage.getItem('current')) {
         LoadMainDishes(takeDishes(), swCheckVeg, takeSort(), localStorage.getItem('current'));
     } else {
@@ -14,6 +13,33 @@ $(document).ready(function () {
 
 });
 let swCheckVeg = "";
+
+function countValueDishes(){
+
+    fetch("https://food-delivery.kreosoft.ru/api/basket", {
+        method: 'GET',
+        headers: new Headers({
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        })
+    })
+        .then(async (response) => {
+            if(response.ok){
+                console.log("hello")
+                let jsonka = await response.json();
+                $("#basketNumb").text(countValueDish(jsonka));
+            }
+
+        })
+
+
+}
+function countValueDish(json){
+    let count = 0;
+    for(let dish of json){
+        count+=1;
+    }
+    return count;
+}
 
 function downUpSelecter(id){
     $(document).ready(function() {
@@ -174,7 +200,8 @@ function LoadMainDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDi
                 .then(async (response) => {
                     if (response.ok) {
                         console.log(response);
-                       takeBasket(actualUrl);
+                        countValueDishes();
+                        takeBasket(actualUrl);
                         return response.json();
 
                     }
@@ -187,6 +214,7 @@ function LoadMainDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDi
 }
 
 function giveInBasket(id, price) {
+    countValueDishes();
     fetch("https://food-delivery.kreosoft.ru/api/basket/dish/" + id.toString(), {
         method: 'POST',
         headers: new Headers({
@@ -195,18 +223,21 @@ function giveInBasket(id, price) {
     })
         .then(async (response) => {
             if (response.ok) {
+                countValueDishes();
                 let countDish = 1;
                 console.log("dish has been accept in your basket");
                 $("#" + id.toString() + "_button").addClass("d-none");
                 $("#" + id.toString()+"_Col").removeClass("d-none");
                 downUpSelecter(id);
                 document.getElementById(id.toString() + '_up').addEventListener("click", function () {
+                    countValueDishes();
                     addNewDishes(id);
                     countDish += 1;
                     console.log("add this dish");
                 }, false);
 
                 document.getElementById(id.toString() + '_down').addEventListener("click", function () {
+                    countValueDishes();
                     console.log("dish has been deleted");
                     deleteNewDishes(id);
                     countDish -= 1;
@@ -230,7 +261,7 @@ function addNewDishes(id) {
     })
         .then(async (response) => {
             if (response.ok) {
-
+                countValueDishes();
             }
         });
 }
@@ -244,6 +275,7 @@ function deleteNewDishes(id) {
     })
         .then(async (response) => {
             if (response.ok) {
+                countValueDishes();
                 console.log("delete dish");
             }
         });

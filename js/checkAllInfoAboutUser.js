@@ -18,22 +18,28 @@ function checkAuth(){
                 let navbarLeft = $("#navbar-left");
                 let navbarRight = $("#navbar-right");
                 let template = $("#auth-user-navbar-template");
+                let num = $("#numb-basket");
 
                 let leftBlockOne = template.clone();
                 leftBlockOne.find(".nav-link").text("Заказы");
                 leftBlockOne.find(".nav-link").addClass("text-muted");
-                leftBlockOne.find(".nav-link    ").attr('href', "");
+
 
                 leftBlockOne.removeClass("d-none");
                 navbarLeft.append(leftBlockOne);
                 let leftBlockTwo = template.clone();
 
                 leftBlockTwo.find(".nav-link").text("Корзина");
-                leftBlockTwo.find(".nav-link").attr("href","");
-                leftBlockTwo.find(".nav-link").addClass("text-muted");
+                leftBlockTwo.find(".nav-link").attr("id","basket");
+                leftBlockTwo.find(".nav-link").attr("href","html/basket.html");
 
+                let leftBlockThree = num.clone();
+                leftBlockThree.find(".badge").attr("id","basketNumb");
+
+                leftBlockThree.removeClass("d-none");
                 leftBlockTwo.removeClass("d-none");
                 navbarLeft.append(leftBlockTwo);
+                navbarLeft.append(leftBlockThree);
                 navbarRight.empty();
 
                 let rightBlockOne = template.clone();
@@ -52,6 +58,9 @@ function checkAuth(){
                 navbarRight.append(rightBlockTwo);
                 document.getElementById("add-button").style.color="black";
                 document.getElementById("add-button").style.background="#efefef";
+
+                document.getElementById("basket").style.color="black";
+
 
                 let json = await response.json();
                 $("#add-nickname").text(json.email);
