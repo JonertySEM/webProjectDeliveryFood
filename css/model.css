@@ -1,3 +1,4 @@
+
 .modal{
     padding: 50px;
     background: #ccc;
@@ -10,9 +11,44 @@
     max-width: 25%;
     height: auto;
 }
+.amount {
+}
+.amount span {
+    display:inline-block;
+    width:20px;
+    height:20px;
+    background:#ededed;
+    cursor:pointer;
+    text-align:center;
+}
+.amount span:hover {
+    background:#dfdfdf;
+}
+.amount input {
+    width:30px;
+    text-align:center;
+}
+.testPict{
+    display: inline-block;
+    flex: content-box;
+    width: auto;
+    height: auto;
+}
+.text_basket{
+    font-weight: bolder;
+}
+.cust_img{
+    float: left;
+    width:  120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 20px
+}
 
-
-
+.custom_fonte{
+    max-font-size: 30px;
+    min-font-size: 10px;
+}
 .bot{
     border-bottom: 4px gray;
     background: white;
@@ -53,6 +89,7 @@
 
 }
 
+
 .cardposit{
     display: flex;
     flex-wrap: wrap;
@@ -87,4 +124,3 @@
     margin-left: 15px ;
 
 }
-

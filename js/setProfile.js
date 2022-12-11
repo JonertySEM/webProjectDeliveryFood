@@ -1,6 +1,6 @@
 $(document).ready(function () {
     getUserInfo();
-    $("#changeButton").on('click',changeUserData);
+    $("#changeButton").on('click', changeUserData);
 });
 
 function getUserInfo() {
@@ -32,7 +32,7 @@ function showUserInfo(json) {
 
     var day = ("0" + onlDate[2]).slice(-2);
     var month = ("0" + (onlDate[1] + 1)).slice(-2);
-    var today = onlDate[0]+"-"+(month)+"-"+(day) ;
+    var today = onlDate[0] + "-" + (month) + "-" + (day);
     $('#birthDate').val(today);
 
     convertGender(json.gender);
@@ -42,38 +42,38 @@ function showUserInfo(json) {
 
 }
 
-function changeUserData(){
+function changeUserData() {
     $("#wrongBirthDateAlert").addClass("d-none");
     $("#wrongNameAlert").addClass("d-none");
 
-    if (!($("#FIO").val()))
-    {
+    if (!($("#FIO").val())) {
         console.log("зашли");
         $("#wrongNameAlert").removeClass("d-none");
         return;
     }
     let changeData = {
-        fullName:$("#FIO").val(),
-        birthDate:new Date($("#birthDate").val()).toISOString(),
+        fullName: $("#FIO").val(),
+        birthDate: new Date($("#birthDate").val()).toISOString(),
         address: $("#adress").val(),
         phoneNumber: $("#phone").val()
     }
-    fetch("https://food-delivery.kreosoft.ru/api/account/profile", {method: "PUT",
-        headers: new Headers({"Content-Type": "application/json", "accept": "*/*", "Authorization" : "Bearer " + localStorage.getItem("token")}),
-        body:JSON.stringify(changeData)
+    fetch("https://food-delivery.kreosoft.ru/api/account/profile", {
+        method: "PUT",
+        headers: new Headers({
+            "Content-Type": "application/json",
+            "accept": "*/*",
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        }),
+        body: JSON.stringify(changeData)
     })
         .then(async (response) => {
-            if (!response.ok)
-            {
+            if (!response.ok) {
                 let json = await response.json();
                 console.log(json);
-                if (json.message == "Invalid birth date")
-                {
+                if (json.message == "Invalid birth date") {
                     $("#wrongBirthDateAlert").removeClass("d-none");
                 }
-            }
-            else
-            {
+            } else {
                 window.location.href = "profile.html";
             }
         })

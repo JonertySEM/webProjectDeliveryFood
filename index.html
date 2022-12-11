@@ -2,6 +2,7 @@
 <head>
 
     <meta charset="UTF-8">
+
     <link href="../css/model.css" rel="stylesheet" type="text/css">
     <link href="/css/star.css" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -19,6 +20,9 @@
 <body>
 <li class="nav-item d-none" id="auth-user-navbar-template">
     <a class="nav-link active"href=""></a>
+</li>
+<li class="nav-item d-none" id="numb-basket">
+    <span class="badge bg-success"></span>
 </li>
 <nav class="navbar">
     <div class="container-fluid">
@@ -118,7 +122,17 @@
 
                             <div class="card-text" id="dishes-dicription"></div>
                         </div>
-                        <div class="card-footer" id="footer-text"></div>
+                        <div class="card-footer d-none justify-content-between" id="footer-card" style="vertical-align:top">
+                            <div class="col float-end">
+                                <div class="amount d-none" id="pressCol">
+                                    <span class="down">-</span>
+                                    <input type="text" id="countDish" value="1" />
+                                    <span class="up">+</span>
+                                </div>
+                            </div>
+                            <button type="button" class="btn d-none btn-primary float-end" id="pressBasket">В корзину</button>
+                            <h7 id="footer-text"></h7>
+                        </div>
                     </div>
 
 
@@ -127,20 +141,19 @@
 
 
 </form>
+<script>
+
+</script>
 
 <link rel="stylesheet" type="text/css" href="/lib/stars.css">
-
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 
 
 
 
 </body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js">
 </script>
 

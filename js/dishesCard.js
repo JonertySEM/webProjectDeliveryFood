@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     loadDishesDetail();
 })
 
@@ -7,14 +7,15 @@ function include(url) {
     script.src = url;
     document.getElementsByTagName('head')[0].appendChild(script);
 }
+
 include("/lib/star-rating.js")
 
 
-function createRating(rating, id){
+function createRating(rating, id) {
 
-    let nm = ((("noLine "+ id.toString()).split("noLine ")[1])).toString();
+    let nm = ((("noLine " + id.toString()).split("noLine ")[1])).toString();
     console.log(nm);
-    $("."+nm).starRating({
+    $("." + nm).starRating({
         starSize: 20,
         totalStars: 10,
         readOnly: true,
@@ -28,10 +29,9 @@ function createRating(rating, id){
     });
 }
 
-function loadDishesDetail()
-{
+function loadDishesDetail() {
     fetch(`https://food-delivery.kreosoft.ru/api/dish/${localStorage.getItem("curDishes")}`)
-        .then(async (response) =>{
+        .then(async (response) => {
             let json = await response.json();
             $("#dishes-card").attr("id", json.id);
             $("#dishes-image").attr('src', json.image);
@@ -40,20 +40,17 @@ function loadDishesDetail()
             $("#dishes-price").text("Цена: " + json.price.toString() + " руб./шт");
             $("#line").addClass(json.id.toString());
             $("#dishes-type").text("Категория блюда - " + json.category);
-            if(json.vegetarian == false){
+            if (json.vegetarian == false) {
                 $('#dishes-vegetarian').text("Не вегетерианское");
-            }
-            else{
+            } else {
                 $('#dishes-vegetarian').text("Вегетерианское");
             }
             $("#year").text(json.year);
             $("#country").text(json.country);
             let genres = "";
-            for (i in json.genres)
-            {
+            for (i in json.genres) {
                 genres += json.genres[i].name;
-                if (i != json.genres.length-1)
-                {
+                if (i != json.genres.length - 1) {
                     genres += ", ";
                 }
             }
@@ -61,28 +58,22 @@ function loadDishesDetail()
             $("#time").text(`${json.time} мин.`);
             $("#motto").text(json.tagline);
             $("#producer").text(json.director);
-            if (json.budget != null)
-            {
+            if (json.budget != null) {
                 $("#budget").text(`$${MoneySplit(String(json.budget))}`);
-            }
-            else
-            {
+            } else {
                 $("#budget").text("-");
             }
-            if (json.fees != null)
-            {
+            if (json.fees != null) {
                 $("#fees").text(`$${MoneySplit(String(json.fees))}`);
-            }
-            else
-            {
+            } else {
                 $("#fees").text("-");
             }
             $("#age").text(`${json.ageLimit}+`);
         })
     fetch(`https://food-delivery.kreosoft.ru/api/dish/${localStorage.getItem("curDishes")}`)
-        .then(async (response) =>{
+        .then(async (response) => {
             let json = await response.json();
-                createRating(json.rating, json.id);
+            createRating(json.rating, json.id);
 
         })
 
