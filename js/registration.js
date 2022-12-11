@@ -1,54 +1,43 @@
 const emailRegex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/
-const passwordRegex= /(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{9,}/
+const passwordRegex = /(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{9,}/
 const emailInput = $("#email");
 const inputPassword = $("#inputPassword");
-const adressInput=$("#adress");
-const birtDate=$("#birthDate")
-const numberPhone=$("#phone");
-const userName=$("#inputLogin");
-const gender=$("#sex");
+const adressInput = $("#adress");
+const birtDate = $("#birthDate")
+const numberPhone = $("#phone");
+const userName = $("#inputLogin");
+const gender = $("#sex");
 const registerButton = $("#registerButton");
 
-$(document).ready(function (){
+$(document).ready(function () {
     emailInput.on('input', emailValidation);
     inputPassword.on('input', validatePasswords);
     registerButton.on('click', Register);
 });
 
-function emailValidation()
-{
-    if (emailRegex.test(emailInput.val()))
-    {
+function emailValidation() {
+    if (emailRegex.test(emailInput.val())) {
         $("#wrongEmailAlert").addClass("d-none");
         registerButton.removeAttr('disabled');
-    }
-    else
-    {
+    } else {
         $("#wrongEmailAlert").removeClass("d-none");
-        registerButton.attr("disabled",'true');
+        registerButton.attr("disabled", 'true');
     }
 }
 
 
-
-function validatePasswords()
-{
-    if (passwordRegex.test(inputPassword.val()))
-    {
+function validatePasswords() {
+    if (passwordRegex.test(inputPassword.val())) {
         $("#shortPasswordAlert").addClass("d-none");
         registerButton.removeAttr('disabled');
-    }
-    else
-    {
+    } else {
         $("#shortPasswordAlert").removeClass("d-none");
-        registerButton.attr("disabled",'true');
+        registerButton.attr("disabled", 'true');
     }
 }
 
-function Register()
-{
-    if ($("#birthDate").val() == "")
-    {
+function Register() {
+    if ($("#birthDate").val() == "") {
         $("#CommonAlert").text("Необходимо заполнить все поля");
         $("#CommonAlert").removeClass("d-none");
         return;
@@ -62,39 +51,33 @@ function Register()
         gender: $("#sex").val(),
         phoneNumber: $("#phone").val()
     }
-    for(title in userRegister)
-    {
-        if (userRegister[title] == "")
-        {
+    for (title in userRegister) {
+        if (userRegister[title] == "") {
             $("#CommonAlert").text("Все поля обязательны к заполнению");
             $("#CommonAlert").removeClass("d-none");
             return;
         }
     }
     $("#CommonAlert").addClass("d-none");
-    fetch("https://food-delivery.kreosoft.ru/api/account/register", {method: 'POST',
-        headers: new Headers({"Content-Type": "application/json",    "accept": "*/*"}),
-        body:JSON.stringify(userRegister)})
+    fetch("https://food-delivery.kreosoft.ru/api/account/register", {
+        method: 'POST',
+        headers: new Headers({"Content-Type": "application/json", "accept": "*/*"}),
+        body: JSON.stringify(userRegister)
+    })
         .then(async (response) => {
-            if (response.ok)
-            {
+            if (response.ok) {
                 let json = await response.json();
                 console.log(json);
-                localStorage.setItem('token',json.token);
+                localStorage.setItem('token', json.token);
                 window.location.href = '../index.html';
-            }
-            else
-            {
+            } else {
                 let json = await response.json();
-                if (json.message == 'Invalid birth date')
-                {
+                if (json.message == 'Invalid birth date') {
                     $("#CommonAlert").text("Введите корректную дату рождения");
                     $("#CommonAlert").removeClass("d-none");
                 }
-                for (let error in json.errors)
-                {
-                    switch(error)
-                    {
+                for (let error in json.errors) {
+                    switch (error) {
                         case 'DuplicateUserName':
                             $("#CommonAlert").text("Логин уже занят");
                             $("#CommonAlert").removeClass("d-none");

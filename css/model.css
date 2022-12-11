@@ -45,6 +45,10 @@
     border-radius: 20px
 }
 
+.custom_fonte{
+    max-font-size: 30px;
+    min-font-size: 10px;
+}
 .bot{
     border-bottom: 4px gray;
     background: white;

@@ -8,13 +8,12 @@ $(document).ready(function () {
         LoadMainDishes();
 
     }
-    /*CreatePagination(localStorage.getItem("count"), localStorage.getItem('current'));*/
 
 
 });
 let swCheckVeg = "";
 
-function countValueDishes(){
+function countValueDishes() {
 
     fetch("https://food-delivery.kreosoft.ru/api/basket", {
         method: 'GET',
@@ -23,7 +22,7 @@ function countValueDishes(){
         })
     })
         .then(async (response) => {
-            if(response.ok){
+            if (response.ok) {
                 console.log("hello")
                 let jsonka = await response.json();
                 $("#basketNumb").text(countValueDish(jsonka));
@@ -33,16 +32,17 @@ function countValueDishes(){
 
 
 }
-function countValueDish(json){
+
+function countValueDish(json) {
     let count = 0;
-    for(let dish of json){
-        count+=1;
+    for (let dish of json) {
+        count += 1;
     }
     return count;
 }
 
-function downUpSelecter(id){
-    $(document).ready(function() {
+function downUpSelecter(id) {
+    $(document).ready(function () {
         $('#' + id.toString() + '_down').click(function () {
             var $input = $(this).parent().find('input');
             var count = parseInt($input.val()) - 1;
@@ -61,7 +61,6 @@ function downUpSelecter(id){
 }
 
 function takeDishes() {
-    /*console.log($("#selectFoodValue").val());*/
     let strDish = "";
     let massiveDish = $("#selectFoodValue").val();
     for (let position of massiveDish) {
@@ -82,35 +81,6 @@ function include(url) {
     var script = document.createElement('script');
     script.src = url;
     document.getElementsByTagName('head')[0].appendChild(script);
-}
-
-
-function takeRating(page) {
-    let actualUrl;
-    if (takeDishes().toString() == "" && takeSort().toString() == "") {
-        actualUrl = stableUrl;
-    } else {
-        actualUrl = "https://food-delivery.kreosoft.ru/api/dish?" + takeDishes() + swCheckVeg.toString() + takeSort() + 'page=' + page.toString();
-        console.log(takeDishes());
-    }
-
-    fetch(actualUrl)
-        .then((response) => {
-            console.log(response);
-            return response.json();
-        })
-        .then((json) => {
-            for (let dish of json.dishes) {
-                console.log(dish.rating);
-                document.getElementById("stars").id = dish.id.toString();
-
-                createRating(dish.rating);
-
-
-            }
-
-        });
-
 }
 
 
@@ -157,11 +127,13 @@ function LoadMainDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDi
                 block.find(".my-rating").attr("id", count);
                 block.find("#dishes-type").text("Категория блюда - " + takeTypeDishes(dish.category));
 
-                footer.find("#pressBasket").attr("id",dish.id.toString() + "_button");
-                footer.find("#pressCol").attr("id", dish.id.toString()+"_Col");
+                footer.find("#pressBasket").attr("id", dish.id.toString() + "_button");
+                footer.find("#pressCol").attr("id", dish.id.toString() + "_Col");
 
                 footer.find(".down").attr("id", dish.id.toString() + '_down');
                 footer.find(".up").attr("id", dish.id.toString() + '_up');
+                footer.find("#countDish").attr("id", "countDish_" + dish.id.toString());
+                footer.find("#countDish_" + dish.id.toString()).val(1);
 
 
                 console.log(dish);
@@ -213,7 +185,7 @@ function LoadMainDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDi
 
 }
 
-function giveInBasket(id, price) {
+function giveInBasket(id, amount) {
     countValueDishes();
     fetch("https://food-delivery.kreosoft.ru/api/basket/dish/" + id.toString(), {
         method: 'POST',
@@ -224,10 +196,11 @@ function giveInBasket(id, price) {
         .then(async (response) => {
             if (response.ok) {
                 countValueDishes();
-                let countDish = 1;
+                let countDish = amount;
                 console.log("dish has been accept in your basket");
                 $("#" + id.toString() + "_button").addClass("d-none");
-                $("#" + id.toString()+"_Col").removeClass("d-none");
+                $("#" + id.toString() + "_Col").removeClass("d-none");
+
                 downUpSelecter(id);
                 document.getElementById(id.toString() + '_up').addEventListener("click", function () {
                     countValueDishes();
@@ -242,7 +215,7 @@ function giveInBasket(id, price) {
                     deleteNewDishes(id);
                     countDish -= 1;
                     if (countDish == 0) {
-                        $("#" + id.toString()+"_Col").addClass("d-none");
+                        $("#" + id.toString() + "_Col").addClass("d-none");
                         $("#" + id.toString() + "_button").removeClass("d-none");
                     }
                 }, false);
@@ -281,6 +254,26 @@ function deleteNewDishes(id) {
         });
 }
 
+function checkDataInBasket(id) {
+    fetch("https://food-delivery.kreosoft.ru/api/basket", {
+        method: 'GET',
+        headers: new Headers({
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        })
+    })
+        .then(async (response) => {
+            if (response.ok) {
+                console.log("hello")
+                let jsonka = await response.json();
+                for (let dish of jsonka) {
+                    if (dish.id == id) {
+                        giveInBasket(dish.id, dish.amount);
+                    }
+                }
+            }
+
+        })
+}
 
 function takeBasket(url) {
     fetch(url)
@@ -291,10 +284,27 @@ function takeBasket(url) {
         .then((json) => {
             console.log(json);
             for (let dish of json.dishes) {
-                let ides = dish.id;
-                $("#"+dish.id.toString() + "_button").removeClass("d-none");
+                fetch("https://food-delivery.kreosoft.ru/api/basket", {
+                    method: 'GET',
+                    headers: new Headers({
+                        "Authorization": "Bearer " + localStorage.getItem("token")
+                    })
+                })
+                    .then(async (response) => {
+                        if (response.ok) {
+                            console.log("hello")
+                            let jsonka = await response.json();
+                            for (let dish of jsonka) {
+                                if (dish.id == id) {
+                                    giveInBasket(dish.id, dish.amount);
+                                }
+                            }
+                        }
+
+                    })
+                $("#" + dish.id.toString() + "_button").removeClass("d-none");
                 document.getElementById(dish.id.toString() + "_button").addEventListener("click", function () {
-                    giveInBasket(dish.id, dish.price);
+                    giveInBasket(dish.id, 1);
 
                 }, true);
 
@@ -367,8 +377,8 @@ function LoadDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDish =
                 block.find(".my-rating").attr("id", count);
                 block.find("#dishes-type").text("Категория блюда - " + takeTypeDishes(dish.category));
 
-                footer.find("#pressBasket").attr("id",dish.id.toString() + "_button");
-                footer.find("#pressCol").attr("id", dish.id.toString()+"_Col");
+                footer.find("#pressBasket").attr("id", dish.id.toString() + "_button");
+                footer.find("#pressCol").attr("id", dish.id.toString() + "_Col");
 
                 footer.find(".down").attr("id", dish.id.toString() + '_down');
                 footer.find(".up").attr("id", dish.id.toString() + '_up');
