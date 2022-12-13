@@ -391,9 +391,7 @@ function LoadDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDish =
                 $("#dishes-container").append(block);
                 count += 1;
 
-            }/*
-            curPage = json.pagination.current;
-            ammountPage = json.pagination.count;*/
+            }
             localStorage.setItem("current", json.pagination.current);
             localStorage.setItem("count", json.pagination.count);
             DishesClick();
@@ -457,7 +455,6 @@ function CreatePagination(pagesAmount, currentPage) {
         }
         block.insertBefore($(".pagination #next-sign"));
     }
-    // Трабл с созданием карточек страниц
 
 
     PageChangeEvent();

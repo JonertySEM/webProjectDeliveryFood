@@ -73,14 +73,15 @@ function Register() {
             } else {
                 let json = await response.json();
                 if (json.message == 'Invalid birth date') {
-                    $("#CommonAlert").text("Введите корректную дату рождения");
-                    $("#CommonAlert").removeClass("d-none");
+                    $("#CommonUslesDateAlert").text("Введите корректную дату рождения");
+                    $("#CommonUslesDateAlert").removeClass("d-none");
                 }
                 for (let error in json.errors) {
                     switch (error) {
                         case 'DuplicateUserName':
-                            $("#CommonAlert").text("Логин уже занят");
-                            $("#CommonAlert").removeClass("d-none");
+                            console.log("hello");
+                            $("#CommonUslesMailAlert").text("Данная почта уже занята");
+                            $("#CommonUslesMailAlert").removeClass("d-none");
                     }
                     console.log(json.errors);
                 }
