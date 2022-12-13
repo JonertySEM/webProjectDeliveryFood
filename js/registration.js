@@ -72,11 +72,12 @@ function Register() {
                 window.location.href = '../index.html';
             } else {
                 let json = await response.json();
+                console.log(json);
                 if (json.message == 'Invalid birth date') {
                     $("#CommonUslesDateAlert").text("Введите корректную дату рождения");
                     $("#CommonUslesDateAlert").removeClass("d-none");
                 }
-                for (let error in json.errors) {
+                for (let error in json) {
                     switch (error) {
                         case 'DuplicateUserName':
                             console.log("hello");

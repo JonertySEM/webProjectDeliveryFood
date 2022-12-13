@@ -174,6 +174,7 @@ function LoadMainDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDi
                         console.log(response);
                         countValueDishes();
                         takeBasket(actualUrl);
+                        checkDataInBasket();
                         return response.json();
 
                     }
@@ -254,7 +255,7 @@ function deleteNewDishes(id) {
         });
 }
 
-function checkDataInBasket(id) {
+function checkDataInBasket() {
     fetch("https://food-delivery.kreosoft.ru/api/basket", {
         method: 'GET',
         headers: new Headers({
@@ -266,13 +267,39 @@ function checkDataInBasket(id) {
                 console.log("hello")
                 let jsonka = await response.json();
                 for (let dish of jsonka) {
-                    if (dish.id == id) {
-                        giveInBasket(dish.id, dish.amount);
-                    }
+                    checkDishes(dish.id, dish.amount);
                 }
             }
 
         })
+}
+
+function checkDishes(id, amount){
+    let countDish = amount;
+    console.log("dish has been accept in your basket");
+    $("#" + id.toString() + "_button").addClass("d-none");
+    $("#" + id.toString() + "_Col").removeClass("d-none");
+
+    $("#countDish_" + id.toString()).val(amount);
+
+    downUpSelecter(id);
+    document.getElementById(id.toString() + '_up').addEventListener("click", function () {
+        countValueDishes();
+        addNewDishes(id);
+        countDish += 1;
+        console.log("add this dish");
+    }, false);
+
+    document.getElementById(id.toString() + '_down').addEventListener("click", function () {
+        countValueDishes();
+        console.log("dish has been deleted");
+        deleteNewDishes(id);
+        countDish -= 1;
+        if (countDish == 0) {
+            $("#" + id.toString() + "_Col").addClass("d-none");
+            $("#" + id.toString() + "_button").removeClass("d-none");
+        }
+    }, false);
 }
 
 function takeBasket(url) {
@@ -284,24 +311,6 @@ function takeBasket(url) {
         .then((json) => {
             console.log(json);
             for (let dish of json.dishes) {
-                fetch("https://food-delivery.kreosoft.ru/api/basket", {
-                    method: 'GET',
-                    headers: new Headers({
-                        "Authorization": "Bearer " + localStorage.getItem("token")
-                    })
-                })
-                    .then(async (response) => {
-                        if (response.ok) {
-                            console.log("hello")
-                            let jsonka = await response.json();
-                            for (let dish of jsonka) {
-                                if (dish.id == id) {
-                                    giveInBasket(dish.id, dish.amount);
-                                }
-                            }
-                        }
-
-                    })
                 $("#" + dish.id.toString() + "_button").removeClass("d-none");
                 document.getElementById(dish.id.toString() + "_button").addEventListener("click", function () {
                     giveInBasket(dish.id, 1);
