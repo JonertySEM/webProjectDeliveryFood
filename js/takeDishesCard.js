@@ -132,6 +132,7 @@ function LoadMainDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDi
 
                 footer.find(".down").attr("id", dish.id.toString() + '_down');
                 footer.find(".up").attr("id", dish.id.toString() + '_up');
+
                 footer.find("#countDish").attr("id", "countDish_" + dish.id.toString());
                 footer.find("#countDish_" + dish.id.toString()).val(1);
 
@@ -197,6 +198,7 @@ function giveInBasket(id, amount) {
         .then(async (response) => {
             if (response.ok) {
                 countValueDishes();
+                $("#countDish_" + id.toString()).val(amount);
                 let countDish = amount;
                 console.log("dish has been accept in your basket");
                 $("#" + id.toString() + "_button").addClass("d-none");
@@ -267,20 +269,26 @@ function checkDataInBasket() {
                 console.log("hello")
                 let jsonka = await response.json();
                 for (let dish of jsonka) {
-                    checkDishes(dish.id, dish.amount);
+                    if (document.getElementById(dish.id.toString() + "_Col")) {
+
+                        checkDishes(dish.id, dish.amount);
+                    }
+
                 }
             }
 
         })
 }
 
-function checkDishes(id, amount){
+function checkDishes(id, amount) {
     let countDish = amount;
     console.log("dish has been accept in your basket");
     $("#" + id.toString() + "_button").addClass("d-none");
     $("#" + id.toString() + "_Col").removeClass("d-none");
-
+    console.log(amount + "value");
     $("#countDish_" + id.toString()).val(amount);
+    console.log(document.getElementById("countDish_" + id.toString()).value);
+    console.log(id);
 
     downUpSelecter(id);
     document.getElementById(id.toString() + '_up').addEventListener("click", function () {
@@ -391,6 +399,8 @@ function LoadDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDish =
 
                 footer.find(".down").attr("id", dish.id.toString() + '_down');
                 footer.find(".up").attr("id", dish.id.toString() + '_up');
+                footer.find("#countDish").attr("id", "countDish_" + dish.id.toString());
+                footer.find("#countDish_" + dish.id.toString()).val(1);
 
 
                 console.log(dish);
@@ -427,7 +437,9 @@ function LoadDishes(lsDishes = takeDishes(), vegetarian = swCheckVeg, sortDish =
                 .then(async (response) => {
                     if (response.ok) {
                         console.log(response);
+                        countValueDishes();
                         takeBasket(actualUrl);
+                        checkDataInBasket();
                         return response.json();
 
                     }

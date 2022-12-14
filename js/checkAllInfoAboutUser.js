@@ -22,7 +22,8 @@ function checkAuth() {
 
                 let leftBlockOne = template.clone();
                 leftBlockOne.find(".nav-link").text("Заказы");
-                leftBlockOne.find(".nav-link").addClass("text-muted");
+                leftBlockOne.find(".nav-link").attr("id","dishesHistory");
+                leftBlockOne.find(".nav-link").attr("href","html/ordersHistory.html");
 
 
                 leftBlockOne.removeClass("d-none");
@@ -31,7 +32,13 @@ function checkAuth() {
 
                 leftBlockTwo.find(".nav-link").text("Корзина");
                 leftBlockTwo.find(".nav-link").attr("id", "basket");
-                leftBlockTwo.find(".nav-link").attr("href", "html/basket.html");
+                if(window.location.href.split("http://localhost:63342/webProject/html/")[1] == "profile.html"){
+                    leftBlockTwo.find(".nav-link").attr("href", "../html/basket.html");
+                }
+                else{
+                    leftBlockTwo.find(".nav-link").attr("href", "html/basket.html");
+                }
+
 
                 let leftBlockThree = num.clone();
                 leftBlockThree.find(".badge").attr("id", "basketNumb");
@@ -60,11 +67,18 @@ function checkAuth() {
                 document.getElementById("add-button").style.background = "#efefef";
 
                 document.getElementById("basket").style.color = "black";
+                document.getElementById("dishesHistory").style.color = "black";
 
 
                 let json = await response.json();
                 $("#add-nickname").text(json.email);
-                $("#add-nickname").attr('href', 'html/profile.html');
+
+                if(window.location.href.split("http://localhost:63342/webProject/html/")[1] == "basket.html"){
+                    $("#add-nickname").attr('href', '../html/profile.html');
+                }
+                else{
+                    $("#add-nickname").attr('href', 'html/profile.html');
+                }
 
                 if (window.location.href.split("http://localhost:63342/webProject/html/")[1] == "profile.html") {
                     $("#add-button").attr('href', '../index.html');

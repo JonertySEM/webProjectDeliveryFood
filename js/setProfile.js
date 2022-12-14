@@ -1,5 +1,6 @@
 $(document).ready(function () {
     getUserInfo();
+    countValueDishes();
     $("#changeButton").on('click', changeUserData);
 });
 
@@ -19,6 +20,34 @@ function getUserInfo() {
             }
 
         })
+}
+
+function countValueDishes() {
+
+    fetch("https://food-delivery.kreosoft.ru/api/basket", {
+        method: 'GET',
+        headers: new Headers({
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        })
+    })
+        .then(async (response) => {
+            if (response.ok) {
+                console.log("hello")
+                let jsonka = await response.json();
+                $("#basketNumb").text(countValueDish(jsonka));
+            }
+
+        })
+
+
+}
+
+function countValueDish(json) {
+    let count = 0;
+    for (let dish of json) {
+        count += 1;
+    }
+    return count;
 }
 
 function showUserInfo(json) {

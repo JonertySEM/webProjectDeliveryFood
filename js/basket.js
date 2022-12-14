@@ -4,7 +4,7 @@ $(document).ready(function () {
 });
 
 
-function checkBusket(){
+function checkBusket() {
     fetch("https://food-delivery.kreosoft.ru/api/basket", {
         method: 'GET',
         headers: new Headers({
@@ -12,18 +12,19 @@ function checkBusket(){
         })
     })
         .then(async (response) => {
-                if(response.ok){
-                    console.log("hello")
-                    let jsonka = await response.json();
-                    let countDish = countValueDish(jsonka);
-                    showAllCard(jsonka)
-                    countValueDishes()
-                }
+            if (response.ok) {
+                console.log("hello")
+                let jsonka = await response.json();
+                let countDish = countValueDish(jsonka);
+                showAllCard(jsonka)
+                countValueDishes()
+            }
 
         })
 
 }
-function countValueDishes(){
+
+function countValueDishes() {
 
     fetch("https://food-delivery.kreosoft.ru/api/basket", {
         method: 'GET',
@@ -32,7 +33,7 @@ function countValueDishes(){
         })
     })
         .then(async (response) => {
-            if(response.ok){
+            if (response.ok) {
                 console.log("hello")
                 let jsonka = await response.json();
                 $("#basketNumb").text(countValueDish(jsonka));
@@ -43,7 +44,7 @@ function countValueDishes(){
 
 }
 
-function delDish(id){
+function delDish(id) {
     fetch("https://food-delivery.kreosoft.ru/api/basket/dish/" + id.toString() + "?increase=false", {
         method: 'DELETE',
         headers: new Headers({
@@ -58,31 +59,28 @@ function delDish(id){
         });
 }
 
-function countValueDish(json){
+function countValueDish(json) {
     let count = 0;
-    for(let dish of json){
-        count+=1;
+    for (let dish of json) {
+        count += 1;
     }
     return count;
 }
 
-function deleteDish(id, json){
 
-}
-
-function showAllCard(json){
+function showAllCard(json) {
     $("#cardsInBasket").empty();
     let card = $('#cardInBasket');
     let count = 1;
-    for(let dish of json){
+    for (let dish of json) {
         let block = card.clone();
-        block.find(".row").attr("id", "row_"+dish.id.toString());
+        block.find(".row").attr("id", "row_" + dish.id.toString());
         block.find("#nameDish").text(dish.name);
-        block.find("#number").text(count.toString()+".");
+        block.find("#number").text(count.toString() + ".");
         block.find(".btn-danger").attr("id", dish.id.toString() + "_del");
         block.find("#priceDish").text("Цена/шт:" + dish.price + " руб.");
         block.find("#dishImage").attr("src", dish.image);
-        block.find("#dishImage").attr("id",dish.id);
+        block.find("#dishImage").attr("id", dish.id);
         block.find("#countDish").attr("id", "countDish_" + dish.id.toString());
         block.find("#countDish_" + dish.id.toString()).val(dish.amount);
 
@@ -109,19 +107,19 @@ function showAllCard(json){
 
         document.getElementById(dish.id.toString() + '_down').addEventListener("click", function () {
             countValueDishes();
-            if(document.getElementById("countDish_" + dish.id.toString()).value == 1){
+            if (document.getElementById("countDish_" + dish.id.toString()).value == 1) {
                 delDish(dish.id);
-            }
-            else{
+            } else {
                 deleteNewDishes(dish.id);
             }
 
             console.log("dish has been deleted");
 
         }, false);
-        count+=1;
+        count += 1;
     }
 }
+
 function addNewDishes(id) {
     fetch("https://food-delivery.kreosoft.ru/api/basket/dish/" + id.toString(), {
         method: 'POST',
@@ -152,8 +150,8 @@ function deleteNewDishes(id) {
 }
 
 
-function downUpSelecter(id){
-    $(document).ready(function() {
+function downUpSelecter(id) {
+    $(document).ready(function () {
         $('#' + id.toString() + '_down').click(function () {
             var $input = $(this).parent().find('input');
             var count = parseInt($input.val()) - 1;

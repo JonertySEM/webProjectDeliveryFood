@@ -11,8 +11,19 @@
     max-width: 25%;
     height: auto;
 }
-.amount {
+.outer{
+   display: flex;
+    align-items: center;
 }
+
+
+.inner{
+
+
+}
+
+
+
 .amount span {
     display:inline-block;
     width:20px;
@@ -37,6 +48,7 @@
 .text_basket{
     font-weight: bolder;
 }
+
 .cust_img{
     float: left;
     width:  120px;
