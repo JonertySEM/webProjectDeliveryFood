@@ -4,7 +4,7 @@ $(document).ready(function () {
 
 });
 
-function checkDishesInBasket(){
+function checkDishesInBasket() {
     console.log(location.hash.substr(3));
     fetch("https://food-delivery.kreosoft.ru/api/basket", {
         method: 'GET',
@@ -22,7 +22,7 @@ function checkDishesInBasket(){
         })
 }
 
-function checkHistoryOrders(){
+function checkHistoryOrders() {
     fetch("https://food-delivery.kreosoft.ru/api/order", {
         method: 'GET',
         headers: new Headers({
@@ -40,21 +40,23 @@ function checkHistoryOrders(){
         })
 }
 
-function changeDataDelivery(data){
+function changeDataDelivery(data) {
     var date = data.split("T")[0];
     var time = data.split("T")[1];
     var dateChen = date.split("-")
     console.log(time);
     var timeChen = time.split(":");
-    return dateChen[2].toString() + "." + dateChen[1].toString() + "." +dateChen[0].toString() + " " + timeChen[0] + ":" + timeChen[1];
+    return dateChen[2].toString() + "." + dateChen[1].toString() + "." + dateChen[0].toString() + " " + timeChen[0] + ":" + timeChen[1];
 
 }
-function changeDataOrder(data){
+
+function changeDataOrder(data) {
     var date = data.split("T")[0];
     var dateChen = date.split("-");
-    return dateChen[2].toString() + "." + dateChen[1].toString() + "." +dateChen[0].toString();
+    return dateChen[2].toString() + "." + dateChen[1].toString() + "." + dateChen[0].toString();
 
 }
+
 function showHistoryOrders(json) {
     $("#history-container").empty();
     let card = $('#order_history_card');
@@ -66,21 +68,20 @@ function showHistoryOrders(json) {
 
 
         block.find(".confirm_order").attr("id", orders.id);
-        block.find(".delivery_data").text(changeDataDelivery(orders.deliveryTime) );
+        block.find(".delivery_data").text(changeDataDelivery(orders.deliveryTime));
         block.find(".delivery_price").text(orders.price.toString());
 
-        block.find("#"+orders.id.toString()).on("click",function (){
+        block.find("#" + orders.id.toString()).on("click", function () {
             location.href = '../html/orderDetails.html#' + orders.id.toString();
         })
 
 
-        if(block.find(".order_status").text() == "В обработке"){
+        if (block.find(".order_status").text() == "В обработке") {
             block.find(".confirm_order").removeClass("d-none");
-            block.find(".confirm_order").on("click",function (){
+            block.find(".confirm_order").on("click", function () {
                 confrimUserOrder(orders.id);
             })
         }
-
 
 
         block.removeClass("d-none");
@@ -92,7 +93,7 @@ function showHistoryOrders(json) {
 
 }
 
-function confrimUserOrder(id){
+function confrimUserOrder(id) {
     fetch("https://food-delivery.kreosoft.ru/api/order/" + id.toString() + "/status", {
         method: 'POST',
         headers: new Headers({
@@ -108,8 +109,8 @@ function confrimUserOrder(id){
         })
 }
 
-function changeStatus(status){
-    switch (status.toString()){
+function changeStatus(status) {
+    switch (status.toString()) {
         case "InProcess":
             return "В обработке";
         case "Delivered":
@@ -130,7 +131,7 @@ function countValueDishes() {
                 console.log("hello")
                 let jsonka = await response.json();
                 $("#basketNumb").text(countValueDish(jsonka));
-                if(countValueDish(jsonka) != 0){
+                if (countValueDish(jsonka) != 0) {
                     $("#note").removeClass("d-none");
                 }
             }

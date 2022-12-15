@@ -4,7 +4,7 @@ $(document).ready(function () {
 });
 
 
-function checkHistoryOrders(){
+function checkHistoryOrders() {
     fetch("https://food-delivery.kreosoft.ru/api/order", {
         method: 'GET',
         headers: new Headers({
@@ -22,23 +22,24 @@ function checkHistoryOrders(){
         })
 }
 
-function changeDataDelivery(data){
+function changeDataDelivery(data) {
     var date = data.split("T")[0];
     var time = data.split("T")[1];
     var dateChen = date.split("-")
     console.log(time);
     var timeChen = time.split(":");
-    return dateChen[2].toString() + "." + dateChen[1].toString() + "." +dateChen[0].toString() + " " + timeChen[0] + ":" + timeChen[1];
+    return dateChen[2].toString() + "." + dateChen[1].toString() + "." + dateChen[0].toString() + " " + timeChen[0] + ":" + timeChen[1];
 
 }
-function changeDataOrder(data){
+
+function changeDataOrder(data) {
     var date = data.split("T")[0];
     var dateChen = date.split("-");
-    return dateChen[2].toString() + "." + dateChen[1].toString() + "." +dateChen[0].toString();
+    return dateChen[2].toString() + "." + dateChen[1].toString() + "." + dateChen[0].toString();
 
 }
 
-function checkOrderDetails(id){
+function checkOrderDetails(id) {
     fetch("https://food-delivery.kreosoft.ru/api/order/" + id.toString(), {
         method: 'GET',
         headers: new Headers({
@@ -56,21 +57,23 @@ function checkOrderDetails(id){
         })
 }
 
-function changeDataDelivery(data){
+function changeDataDelivery(data) {
     var date = data.split("T")[0];
     var time = data.split("T")[1];
     var dateChen = date.split("-")
     console.log(time);
     var timeChen = time.split(":");
-    return dateChen[2].toString() + "." + dateChen[1].toString() + "." +dateChen[0].toString() + " " + timeChen[0] + ":" + timeChen[1];
+    return dateChen[2].toString() + "." + dateChen[1].toString() + "." + dateChen[0].toString() + " " + timeChen[0] + ":" + timeChen[1];
 
 }
-function changeDataOrder(data){
+
+function changeDataOrder(data) {
     var date = data.split("T")[0];
     var dateChen = date.split("-");
-    return dateChen[2].toString() + "." + dateChen[1].toString() + "." +dateChen[0].toString();
+    return dateChen[2].toString() + "." + dateChen[1].toString() + "." + dateChen[0].toString();
 
 }
+
 function showOderDetails(json) {
     $("#allCardOrderDetails").empty();
     let card = $('#CardEat');
@@ -101,24 +104,26 @@ function showOderDetails(json) {
     $("#adressDelivery").text(json.address);
     $("#dataOrder").text(changeDataDelivery(json.orderTime));
     $("#statusDelivery").text(changeStatus(json.status));
-    if(json.dishes.status == "В обработке"){
+    if ($("#statusDelivery") == "В обработке") {
         $(".confrimButton").removeClass("d-none");
     }
+
     $("#dataTimeDelivery").text(changeDataDelivery(json.deliveryTime));
     console.log(sumOfOrder);
-   $("#totalOrderPrice").text(sumOfOrder.toString() + " руб.");
+    $("#totalOrderPrice").text(sumOfOrder.toString() + " руб.");
 }
 
 
-function changeStatus(status){
-    switch (status.toString()){
+function changeStatus(status) {
+    switch (status.toString()) {
         case "InProcess":
             return "В обработке";
         case "Delivered":
             return "Доставлен";
     }
 }
-function confrimUserOrder(id){
+
+function confrimUserOrder(id) {
     fetch("https://food-delivery.kreosoft.ru/api/order/" + id.toString() + "/status", {
         method: 'POST',
         headers: new Headers({
@@ -134,8 +139,8 @@ function confrimUserOrder(id){
         })
 }
 
-function changeStatus(status){
-    switch (status.toString()){
+function changeStatus(status) {
+    switch (status.toString()) {
         case "InProcess":
             return "В обработке";
         case "Delivered":
@@ -156,7 +161,7 @@ function countValueDishes() {
                 console.log("hello")
                 let jsonka = await response.json();
                 $("#basketNumb").text(countValueDish(jsonka));
-                if(countValueDish(jsonka) != 0){
+                if (countValueDish(jsonka) != 0) {
                     $("#note").removeClass("d-none");
                 }
             }

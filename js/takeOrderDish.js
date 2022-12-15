@@ -5,7 +5,7 @@ $(document).ready(function () {
     $("#confrimOrderButton").on('click', confrimOrder);
 });
 
-function checkDishesInBasket(){
+function checkDishesInBasket() {
     fetch("https://food-delivery.kreosoft.ru/api/basket", {
         method: 'GET',
         headers: new Headers({
@@ -43,7 +43,7 @@ function countValueDishes() {
 
 }
 
-function takeAllInfoAboutOrder(){
+function takeAllInfoAboutOrder() {
     fetch("https://food-delivery.kreosoft.ru/api/account/profile", {
         method: 'GET',
         headers: new Headers({
@@ -91,18 +91,17 @@ function showDishInOrder(json) {
     $("#totalSumOfOrder").text(sumOfOrder.toString() + " руб.");
 }
 
-function confrimOrder(){
+function confrimOrder() {
     var today = new Date();
-    console.log($("#userAdressOrder").val() );
-    if($("#userAdressOrder").val() == ""){
+    console.log($("#userAdressOrder").val());
+    if ($("#userAdressOrder").val() == "") {
         $("#adress_invalid").removeClass("d-none")
         console.log("nope");
         return;
-    }
-    else{
+    } else {
         $("#adress_invalid").addClass("d-none")
     }
-    var second = $("#delivery-time").val().split("T")[1].split(":")[0] * 3600 +$("#delivery-time").val().split("T")[1].split(":")[1] * 60;
+    var second = $("#delivery-time").val().split("T")[1].split(":")[0] * 3600 + $("#delivery-time").val().split("T")[1].split(":")[1] * 60;
     var tmp = $("#delivery-time").val().split("T")[0].split("-");
     var dataOrder = tmp[2].toString() + "." + tmp[1].toString() + "." + tmp[0].toString();
     var todaySecond = today.toLocaleTimeString().split(":")[0] * 3600 + today.toLocaleTimeString().split(":")[1] * 60 + Number(today.toLocaleTimeString().split(":")[2]);
@@ -118,30 +117,30 @@ function confrimOrder(){
         return;
     }*/
     var userData = {
-        deliveryTime:$("#delivery-time").val(),
+        deliveryTime: $("#delivery-time").val(),
         address: $("#userAdressOrder").val()
     }
     console.log("Heyy");
 
-       fetch("https://food-delivery.kreosoft.ru/api/order", {
-            method: 'POST',
-            headers: new Headers(
-                {
+    fetch("https://food-delivery.kreosoft.ru/api/order", {
+        method: 'POST',
+        headers: new Headers(
+            {
                 "Authorization": "Bearer " + localStorage.getItem("token"),
-        "Content-Type": "application/json", "accept": "application/json"}),
-           body: JSON.stringify(userData)
+                "Content-Type": "application/json", "accept": "application/json"
+            }),
+        body: JSON.stringify(userData)
+    })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '../html/ordersHistory.html';
+            } else {
+                throw Error(response.status.toString());
+            }
         })
-           .then(response =>{
-               if(response.ok){
-                   window.location.href = '../html/ordersHistory.html';
-               }
-               else{
-                   throw Error(response.status.toString());
-               }
-           })
-           .then(json =>{
-               console.log(json);
-           })
+        .then(json => {
+            console.log(json);
+        })
 
 
 }
@@ -159,7 +158,7 @@ function deleteAllDishesInBusket() {
             if (response.ok) {
                 console.log("hello")
                 let jsonka = await response.json();
-                for(let dish of jsonka){
+                for (let dish of jsonka) {
                     delDish(dish.id);
                 }
             }
