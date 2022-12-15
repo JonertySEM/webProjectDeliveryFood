@@ -18,6 +18,19 @@
     <script src=
                     "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css"
+          integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"/>
+    <link rel=”stylesheet” href=”http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css” rel=”stylesheet”>
+
+    <link rel=”stylesheet” href=”http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css”>
     <title>Title</title>
 </head>
 
@@ -57,7 +70,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col">
                         <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-success orders_formalize">Оформить</button>
+                            <button type="button" class="btn btn-success orders_formalize" onclick="window.location.href = 'confrimOrder.html';">Оформить</button>
                         </div>
                     </div>
                 </div>
@@ -71,12 +84,12 @@
 
         </div>
     </div>
-<!--
-    <footer class="d-flex  bg-light flex-wrap justify-content-between align-items-center py-3 my-0"
-            id="footer_container">
-    </footer>-->
+    <!--
+        <footer class="d-flex  bg-light flex-wrap justify-content-between align-items-center py-3 my-0"
+                id="footer_container">
+        </footer>-->
 
-    <li class="list-group-item d-none" id="order_history_card">
+    <li class="list-group-item d-none linee" id="order_history_card">
         <div class="row">
             <div class="col">
                 <div class="card-body">
@@ -90,12 +103,12 @@
                 <div class="d-flex align-self-end justify-content-end ">
                     <div class="d-flex flex-column bd-highlight justify-content-between">
                         <div class="justify-content-center p-2 bd-highlight">
-                            <button class="d-none w-100 btn btn-outline-success confirm_order" >
+                            <button class="d-none w-100 btn btn-outline-success confirm_order">
                                 Подтвердить доставку
                             </button>
                         </div>
                         <div class="d-flex justify-content-center me-auto mb-0 bd-highlight"><p>
-                            <strong>Стоимость доставки: </strong><span class="delivery_price"></span> руб.
+                            <strong>Стоимость заказа: </strong><span class="delivery_price"></span> руб.
                         </p>
                         </div>
                     </div>
@@ -109,7 +122,7 @@
 
 </body>
 
-
+<script src="../js/ordersHistory.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

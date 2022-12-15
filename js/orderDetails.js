@@ -1,26 +1,8 @@
 $(document).ready(function () {
     countValueDishes();
-    checkDishesInBasket();
-
+    checkHistoryOrders();
 });
 
-function checkDishesInBasket(){
-    console.log(location.hash.substr(3));
-    fetch("https://food-delivery.kreosoft.ru/api/basket", {
-        method: 'GET',
-        headers: new Headers({
-            "Authorization": "Bearer " + localStorage.getItem("token")
-        })
-    })
-        .then(async (response) => {
-            if (response.ok) {
-                console.log("hello")
-                let jsonka = await response.json();
-                checkHistoryOrders();
-            }
-
-        })
-}
 
 function checkHistoryOrders(){
     fetch("https://food-delivery.kreosoft.ru/api/order", {
@@ -33,7 +15,7 @@ function checkHistoryOrders(){
             if (response.ok) {
                 console.log("hello")
                 let jsonka = await response.json();
-                showHistoryOrders(jsonka);
+                checkOrderDetails(location.hash.substr(1));
 
             }
 
@@ -55,43 +37,87 @@ function changeDataOrder(data){
     return dateChen[2].toString() + "." + dateChen[1].toString() + "." +dateChen[0].toString();
 
 }
-function showHistoryOrders(json) {
-    $("#history-container").empty();
-    let card = $('#order_history_card');
-    for (let orders of json) {
-        let block = card.clone();
-        block.find(".order_data").text(changeDataOrder(orders.orderTime));
-        block.find(".order_status").text(changeStatus(orders.status));
-        block.find(".order_data").attr("id", orders.id.toString());
 
-
-        block.find(".confirm_order").attr("id", orders.id);
-        block.find(".delivery_data").text(changeDataDelivery(orders.deliveryTime) );
-        block.find(".delivery_price").text(orders.price.toString());
-
-        block.find("#"+orders.id.toString()).on("click",function (){
-            location.href = '../html/orderDetails.html#' + orders.id.toString();
+function checkOrderDetails(id){
+    fetch("https://food-delivery.kreosoft.ru/api/order/" + id.toString(), {
+        method: 'GET',
+        headers: new Headers({
+            "Authorization": "Bearer " + localStorage.getItem("token")
         })
+    })
+        .then(async (response) => {
+            if (response.ok) {
+                console.log("hello")
+                let jsonka = await response.json();
+                showOderDetails(jsonka);
+
+            }
+
+        })
+}
+
+function changeDataDelivery(data){
+    var date = data.split("T")[0];
+    var time = data.split("T")[1];
+    var dateChen = date.split("-")
+    console.log(time);
+    var timeChen = time.split(":");
+    return dateChen[2].toString() + "." + dateChen[1].toString() + "." +dateChen[0].toString() + " " + timeChen[0] + ":" + timeChen[1];
+
+}
+function changeDataOrder(data){
+    var date = data.split("T")[0];
+    var dateChen = date.split("-");
+    return dateChen[2].toString() + "." + dateChen[1].toString() + "." +dateChen[0].toString();
+
+}
+function showOderDetails(json) {
+    $("#allCardOrderDetails").empty();
+    let card = $('#CardEat');
+    let count = 1;
+    let sumOfOrder = 0;
+    $("#numberOrder").text(Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000);
+    for (let dish of json.dishes) {
+        let block = card.clone();
+        block.find(".row").attr("id", "row_" + dish.id.toString());
+        block.find("#dishInOrderTitle").text(dish.name);
+        block.find("#dishImage").attr("src", dish.image);
+        block.find("#dishImage").attr("id", dish.id);
+        block.find("#dishPrice").text("Цена: " + dish.price.toString() + " руб.");
+        block.find("#totalPriceDishInOrder").text(dish.totalPrice.toString() + " руб.");
+        block.find("#dishAmount").text("Количество: " + dish.amount.toString() + " шт.");
+        block.find(dish.amount);
 
 
-        if(block.find(".order_status").text() == "В обработке"){
-            block.find(".confirm_order").removeClass("d-none");
-            block.find(".confirm_order").on("click",function (){
-                confrimUserOrder(orders.id);
-            })
-        }
+        sumOfOrder += dish.totalPrice;
 
-
+        console.log(dish)
 
         block.removeClass("d-none");
 
-        $("#history-container").append(block);
-
+        $("#allCardOrderDetails").append(block);
     }
 
-
+    $("#adressDelivery").text(json.address);
+    $("#dataOrder").text(changeDataDelivery(json.orderTime));
+    $("#statusDelivery").text(changeStatus(json.status));
+    if(json.dishes.status == "В обработке"){
+        $(".confrimButton").removeClass("d-none");
+    }
+    $("#dataTimeDelivery").text(changeDataDelivery(json.deliveryTime));
+    console.log(sumOfOrder);
+   $("#totalOrderPrice").text(sumOfOrder.toString() + " руб.");
 }
 
+
+function changeStatus(status){
+    switch (status.toString()){
+        case "InProcess":
+            return "В обработке";
+        case "Delivered":
+            return "Доставлен";
+    }
+}
 function confrimUserOrder(id){
     fetch("https://food-delivery.kreosoft.ru/api/order/" + id.toString() + "/status", {
         method: 'POST',

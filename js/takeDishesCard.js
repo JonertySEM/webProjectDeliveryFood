@@ -27,7 +27,6 @@ function countValueDishes() {
                 let jsonka = await response.json();
                 $("#basketNumb").text(countValueDish(jsonka));
             }
-
         })
 
 

@@ -72,17 +72,34 @@ function checkAuth() {
 
                 let json = await response.json();
                 $("#add-nickname").text(json.email);
-
-                if(window.location.href.split("http://localhost:63342/webProject/html/")[1] == "basket.html"){
+                if(window.location.href.split("http://localhost:63342/webProject/html/")[1] == "ordersHistory.html"){
                     $("#add-nickname").attr('href', '../html/profile.html');
+                    $("#dishesHistory").attr("href", "ordersHistory.html");
+                    $("#basket").attr('href', '../html/basket.html');
                 }
                 else{
                     $("#add-nickname").attr('href', 'html/profile.html');
                 }
 
+
+                    if(window.location.href.split("http://localhost:63342/webProject/html/")[1] == "basket.html"){
+                    $("#add-nickname").attr('href', '../html/profile.html');
+                    $("#dishesHistory").attr("href", "../html/ordersHistory.html");
+                    $("#basket").attr('href', 'basket.html');
+                }
+
+                else{
+                    $("#add-nickname").attr('href', 'html/profile.html');
+                }
+
+
                 if (window.location.href.split("http://localhost:63342/webProject/html/")[1] == "profile.html") {
                     $("#add-button").attr('href', '../index.html');
-                } else {
+                    $("#dishesHistory").attr("href", "../html/ordersHistory.html");
+                    $("#add-nickname").attr('href', 'profile.html');
+
+                }
+                else {
                     $("#add-button").attr('href', 'index.html');
                 }
 

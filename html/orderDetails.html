@@ -1,0 +1,123 @@
+<html class="h-100" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Food delivery</title>
+  <link href="../css/model.css" rel="stylesheet" type="text/css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css"
+        integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"/>
+  <link rel=”stylesheet” href=”http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css” rel=”stylesheet”>
+
+  <link rel=”stylesheet” href=”http://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css”>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+<body class="d-flex flex-column h-100">
+
+<li class="nav-item d-none" id="auth-user-navbar-template">
+  <a class="nav-link active" href=""></a>
+</li>
+<li class="nav-item d-none" id="numb-basket">
+  <span class="badge bg-success"></span>
+</li>
+<nav class="navbar">
+  <div class="container-fluid">
+    <a class="navbar-brand">Delivery.Кушац</a>
+    <ul class="nav me-auto" id="navbar-left">
+      <li class="nav-item">
+        <a class="nav-link active" href="index.html" style="color:black">Меню</a>
+      </li>
+    </ul>
+    <ul class="nav btn-wrapper-end" id="navbar-right">
+      <li class="nav-item">
+        <a class="nav-link active" href="html/autherisation.html" style="color:black">Вход</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="html/registration.html" style="color:black">Регистрация</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+<div class="container border border-top-0 shadow">
+  <div class="card mb-3 mt-3">
+    <div class = "card-header">
+      <div class="row">
+        <div class="col align-items-center">
+          <h3 class="">Заказ #<span id="numberOrder"></span></h3>
+        </div>
+        <div class="col d-grid gap-2 d-md-flex justify-content-md-end">
+          <button class="btn btn-outline-success d-none confrimButton" type="button">Подтвердить доставку</button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="container">
+        <div class="col">Дата заказа:  <span id="dataOrder"></span></div>
+        <div class="col">Дата доставки: <span id="dataTimeDelivery">20.04.2022 18:15</span> </div>
+        <div class="col">Адрес доставки: <span id="adressDelivery">г. Томск ул. Первая дом 31б</span> </div>
+        <div class="col">Статус заказа - <span id="statusDelivery">В обработке</span></div>
+      </div>
+      <label class="form-label mt-1 mb-0">Список блюд:</label>
+
+      <div class="container border border-bottom-0 ps-0 pe-0 mb-3" id="allCardOrderDetails">
+
+      </div>
+      <div class="card rounded-0 linee d-none" id="CardEat">
+          <div class="row g-0">
+            <div class="col-sm-1 col-6 mt-auto mb-auto dish-container ms-2">
+              <img src="" id="dishImage"
+                   class="img-fluid testPict cust_img">
+            </div>
+            <div class="col-sm col-6 ps-3">
+              <div class="card-body">
+                <p class="dish-title fw-bold mb-0" id="dishInOrderTitle"></p>
+                <p class="dish-price-order mb-0" id="dishPrice">
+                  <span>Цена: </span> 250р.
+                </p>
+                <div class="row">
+                  <div class="col-lg-9 col-md-7">
+                    <p class="amount-of-dish mb-0" id="dishAmount">
+                                        <span>
+                                          Количество:
+                                      </span>
+                    </p>
+                  </div>
+                  <div class="col-lg-3 col-md-5 ">
+                    <p class="dish-price-order mb-0 float-end">
+                                            <span class="fw-bold">
+                                              Стоимость:
+                                            </span>
+                      <span id="totalPriceDishInOrder">500р</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <p class="order-price mb-0"><span class="fw-bold">Стоимость заказа: </span>
+        <span id="totalOrderPrice"></span> </p>
+    </div>
+
+
+  </div>
+
+
+
+
+</div>
+<script src="/js/orderDetails.js"></script>
+<footer class="footer mt-auto py-3 bg-light border-top" id="food-delivery-footer"></footer>
+<script src="/js/checkAllInfoAboutUser.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+</body>
+</html>
+
